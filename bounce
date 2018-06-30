@@ -1,0 +1,88 @@
+<html>
+<head>
+    <style>
+        .float {
+            position: absolute;
+            color: white;
+            font-size: 100%;
+        }
+    </style>
+    <script>
+        let body;
+        let bouncer = [];
+        let offset = 20;
+        let width = window.innerWidth - offset;
+        let height = window.innerHeight - offset;
+
+        let gravity = 0.2;
+        let gravity_angle = 0;
+        let bounce_factor = 1;
+        let vertical_start_velocity = 2.5;
+        let horizontal_start_velocity = 5;
+        let run = true;
+
+        window.onload = function () {
+            body = document.getElementsByTagName("body")[0];
+            body.style.backgroundColor = randomcolor();
+            for (var i = 0; i < 100; i++) {
+                bouncer.push(document.createElement("div"));
+                bouncer[i].classList.add("float");
+                bouncer[i].style.left = (Math.random() * width).toString() + "px";
+                bouncer[i].style.top = (Math.random() * height).toString() + "px";
+                bouncer[i].setAttribute("xmove", Math.random() * horizontal_start_velocity * 2 - 5);
+                bouncer[i].setAttribute("ymove", Math.random() * vertical_start_velocity * 2 - 5);
+                body.appendChild(bouncer[i]);
+                if (Math.random() > 0.5) {
+                    bouncer[i].innerText = "{}"
+                }
+
+            }
+        };
+
+        setInterval(function () {
+            if (run) {
+                width = window.innerWidth - offset;
+                height = window.innerHeight - offset;
+                for (var i = 0; i < bouncer.length; i++) {
+                    let ypos = parseFloat(bouncer[i].style.top);
+                    let xpos = parseFloat(bouncer[i].style.left);
+                    let xmove = parseFloat(bouncer[i].getAttribute("xmove"));
+                    let ymove = parseFloat(bouncer[i].getAttribute("ymove"));
+                    //phys-x
+                    ymove += gravity;
+                    xpos = xpos + xmove;
+                    ypos = ypos + ymove;
+                    if (xpos < 0) {
+                        xmove = -xmove * bounce_factor;
+                        xpos = 0;
+                    } else if (xpos > width) {
+                        xmove = -xmove * bounce_factor;
+                        xpos = width;
+                    }
+                    if (ypos < 0) {
+                        ymove = -ymove * bounce_factor;
+                        ypos = 0;
+                    } else if (ypos > height) {
+                        ymove = -ymove * bounce_factor;
+                        ypos = height;
+                    }
+                    //phys-y
+                    bouncer[i].setAttribute("ymove", ymove);
+                    bouncer[i].setAttribute("xmove", xmove);
+                    bouncer[i].style.left = xpos.toString() + "px";
+                    bouncer[i].style.top = ypos.toString() + "px";
+                }
+            }
+        }, 16);
+
+        function randomcolor() {
+            return "rgb(" + Math.random() * 125 + "," + Math.random() * 125 + "," + Math.random() * 125 + ")";
+        }
+    </script>
+</head>
+<body>
+
+
+</body>
+
+</html>
