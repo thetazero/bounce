@@ -14,6 +14,8 @@
         let width = window.innerWidth - offset;
         let height = window.innerHeight - offset;
 
+        let background_color = randomcolor();
+        let content = '{}';
         let gravity = 0.2;
         let gravity_angle = 0;
         let bounce_factor = 1;
@@ -23,7 +25,8 @@
 
         window.onload = function () {
             body = document.getElementsByTagName("body")[0];
-            body.style.backgroundColor = randomcolor();
+            body.style.backgroundColor = parseBackgroundColor(background_color);
+            body.style.overflow = 'hidden';
             for (var i = 0; i < 100; i++) {
                 bouncer.push(document.createElement("div"));
                 bouncer[i].classList.add("float");
@@ -33,7 +36,7 @@
                 bouncer[i].setAttribute("ymove", Math.random() * vertical_start_velocity * 2 - 5);
                 body.appendChild(bouncer[i]);
                 if (Math.random() > 0.5) {
-                    bouncer[i].innerText = "{}"
+                    bouncer[i].innerText = content;
                 }
 
             }
@@ -76,7 +79,15 @@
         }, 16);
 
         function randomcolor() {
-            return "rgb(" + Math.random() * 125 + "," + Math.random() * 125 + "," + Math.random() * 125 + ")";
+            return {
+                r: Math.random() * 125,
+                g: Math.random() * 125,
+                b: Math.random() * 125
+            };
+        }
+
+        function parseBackgroundColor(background_color) {
+            return `rgb(${background_color.r},${background_color.g},${background_color.b})`;
         }
     </script>
 </head>
